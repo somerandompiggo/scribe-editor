@@ -4,25 +4,46 @@
 
 int pigdig = 100;
 
+void settings() {
+    sf::Text settings;
+    settings.setString("this is a test owo");
+    sf::RenderWindow settingwin(sf::VideoMode(600, 400), "Scribe - Settings", sf::Style::Default);
+    sf::Event event;
+
+
+    // Main loop
+    while (settingwin.isOpen()) {
+        while (settingwin.pollEvent(event)) {
+            if (event.type == sf::Event::Closed){
+                settingwin.close();
+            }
+        }
+        settingwin.draw(settings);
+        settingwin.display();
+    }
+}
 
 int main() {
-    // create the window
+    // create entities
     sf::RenderWindow window(sf::VideoMode(800, 600), "Scribe - Projects", sf::Style::Default);
     sf::Event event;
     sf::Font font;
     sf::Text text;
     sf::Text credits;
-    sf::RectangleShape circle;
+    sf::Thread settingsthread(&settings);
+    sf::Sprite mouse;
+    sf::Texture mousetex;
     text.setString("default: running uncapped fps (space for cap)");
     
-
     // sets all entity info
     credits.setString("Scribe v0.0.1");
     
-    circle.setSize(sf::Vector2f(100, 100));
-    circle.setPosition(250.f, 250.f);
-    circle.setOutlineThickness(5.f);
-    circle.setOutlineColor(sf::Color::Red);
+    mousetex.setSmooth(true);
+    mousetex.loadFromFile("cursors/left_ptr.png");
+    mouse.setTexture(mousetex);
+
+
+    window.setMouseCursorVisible(false);
 
     font.loadFromFile("fonts/ui.ttf");
 
@@ -49,24 +70,26 @@ int main() {
 
         window.clear(sf::Color{ 38, 38, 38, 38 });
         window.draw(text);
-        window.draw(circle);
+        sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+        mouse.setPosition((float)mousepos.x, static_cast<float>(mousepos.y));
         window.draw(credits);
+        window.draw(mouse);
         window.display();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            circle.move(0.f, -1.f);
+            mouse.move(0.f, -1.f);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            circle.move(0.f, 1.f);
+            
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            circle.move(-1.f, 0.f);
+            mouse.rotate(-1);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            circle.move(1.f, 0.f);
+            mouse.rotate(1);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            text.setString("custom: running w/ 120fps cap (backspce for none)");
-            window.setFramerateLimit(120);
+            text.setString("custom: running w/ 60fps cap (backspce for none)");
+            window.setFramerateLimit(60);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
             text.setString("custom: running uncapped fps (space for cap)");
@@ -74,28 +97,4 @@ int main() {
         }
     }
 return 0;
-}
-
-
-
-// finally, a break!
-
-
-void settings() {
-    sf::Text settings;
-    settings.setString("this is a test owo")
-    sf::RenderWindow settingwin(sf::VideoMode(600, 400), "Scribe - Settings", sf::Style::Default);
-    sf::Event event;
-
-
-    // Main loop
-    while (settingwin.isOpen()) {
-            while (settingwin.pollEvent(event)) {
-                // "close requested" event: we close the window
-                if (event.type == sf::Event::Closed){
-                    window.close();
-                }
-            window.draw(settings);
-            window.display();
-    }
 }
