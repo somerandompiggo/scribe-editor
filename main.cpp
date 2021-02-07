@@ -33,6 +33,7 @@ int main() {
     sf::Thread settingsthread(&settings);
     sf::Sprite mouse;
     sf::Texture mousetex;
+    sf::Text sustext;
     text.setString("default: running uncapped fps (space for cap)");
     
     // sets all entity info
@@ -81,10 +82,10 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             mouse.rotate(-1);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             mouse.rotate(1);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
